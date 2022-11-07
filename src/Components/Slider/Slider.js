@@ -4,32 +4,61 @@ import dataSlider from './dataSlider'
 import BtnSlider from './BtnSlider';
 
 
+// on declare la variable
 const Slider = () => {
 const [slideAnim, setSlideAnim] = useState({
     index: 1,   
     inProgress: false
 });
 
-const nextSlide = () => {
-if (slideAnim.index !== dataSlider.length){
+
+// le premier bouton
+
+const nextSlide = () => 
+{
+if (slideAnim.index !== dataSlider.length && !slideAnim.inProgress){
+
     setSlideAnim({index: slideAnim.index + 1, inProgress: true})
+
+    setTimeout(() => {
+        setSlideAnim({index: slideAnim.index + 1, inProgress: false})
+    }, 400)
+    
 }
-else {
+else if (slideAnim.index === dataSlider.length && !slideAnim.inProgress){
+
     setSlideAnim({index: 1, inProgress: true})
+    setTimeout(() => {
+        setSlideAnim({index: 1, inProgress: false})
+    }, 400)
 }
 }
 
+// Le deuxiéme bouton
 
+const prevSlide = () => 
+{
+if (slideAnim.index !== 1 && !slideAnim.inProgress){
 
+    setSlideAnim({index: slideAnim.index - 1, inProgress: true})
 
-const prevSlide = () => {
-if (slideAnim.index !== 1){
-    setSlideAnim({index: slideAnim.index - 1, inProgress: true}) 
+    setTimeout(() => {
+        setSlideAnim({index: slideAnim.index - 1, inProgress: false})
+    }, 400)
+    
 }
-else{
-    setSlideAnim({index: dataSlider.length, inProgress: true})
+else if (slideAnim.index === 1 && !slideAnim.inProgress){
 
+    setSlideAnim({index: 5, inProgress: true})
+    setTimeout(() => {
+        setSlideAnim({index: 5, inProgress: false})
+    }, 400)
 }
+}
+// Creation de plusieurs bouttons du bas
+
+const moveDot = index => {
+    setSlideAnim({index: index, inProgress: false})
 }
 
   return (
@@ -49,6 +78,21 @@ else{
 
         <BtnSlider  moveSlide = {nextSlide} direction= {"next"}/>
         <BtnSlider  moveSlide = {prevSlide} direction= {"prev"}/>
+
+
+        <div className='container-dots'>
+            {Array.from({length : 5}).map((item, index) =>{
+                return <div key={index}
+                className={slideAnim.index === index + 1 ? "dot active" : "dot" }
+                onClick={() => moveDot(index +1)}
+                ></div>
+            })}
+
+        </div>
+
+
+
+
 
 
     </div>
